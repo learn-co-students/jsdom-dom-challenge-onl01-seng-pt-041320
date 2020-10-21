@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const pause = document.getElementById("pause");
     const likes = document.getElementsByClassName("likes");
 
+    let likesArray = new Array();
+
     setInterval(upTick, 1000);
 
     plus.addEventListener("click", function() {
@@ -23,9 +25,15 @@ document.addEventListener("DOMContentLoaded", () => {
     })
 
     heart.addEventListener("click", function() {
-        let likesCount = likes.innerText;
+        const number = timer.innerText;
+        const temp = parseInt(number);
 
+        if (likesArray[temp - 1] === undefined) {
+            likesArray[temp - 1] = 0;
+        }
+        likesArray[temp - 1] += 1;
 
+        likes.innerText = likesArray[temp - 1];
     })
 
     pause.addEventListener("click", function() {
