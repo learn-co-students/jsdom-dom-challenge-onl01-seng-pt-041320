@@ -1,30 +1,31 @@
 document.addEventListener("DOMContentLoaded", () => {
     const timer = document.getElementById("counter");
-    const minus = document.getElementById("minus");
-    const plus = document.getElementById("plus");
-    const heart = document.getElementById("heart");
-    const pause = document.getElementById("pause");
+    const minusButton = document.getElementById("minus");
+    const plusButton = document.getElementById("plus");
+    const heartButton = document.getElementById("heart");
+    const pauseButton = document.getElementById("pause");
     const likes = document.getElementsByClassName("likes");
 
     let likesArray = new Array();
 
-    setInterval(upTick, 1000);
+    let pageTimer = setInterval(upTick, 1000);
 
-    plus.addEventListener("click", function() {
+
+    plusButton.addEventListener("click", function() {
         const counter = timer.innerText;
         let temp = parseInt(counter);
 
         timer.innerText = ++temp;
     })
 
-    minus.addEventListener("click", function() {
+    minusButton.addEventListener("click", function() {
         const counter = timer.innerText;
         let temp = parseInt(counter);
 
         timer.innerText = --temp;
     })
 
-    heart.addEventListener("click", function() {
+    heartButton.addEventListener("click", function() {
         const number = timer.innerText;
         const temp = parseInt(number);
 
@@ -36,8 +37,20 @@ document.addEventListener("DOMContentLoaded", () => {
         likes.innerText = likesArray[temp - 1];
     })
 
-    pause.addEventListener("click", function() {
+    pauseButton.addEventListener("click", function() {
+        let pause = clearInterval(pageTimer);
 
+        if (pause == 1) {
+            minusButton.disabled = false;
+            plusButton.disabled = false;
+            heartButton.disabled = false;
+            pauseButton.innerText = "pause"
+        } else {
+            minusButton.disabled = true;
+            plusButton.disabled = true;
+            heartButton.disabled = true;
+            pauseButton.innerText = "Resume"
+        }
     })
 
     function upTick() {
