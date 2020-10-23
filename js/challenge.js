@@ -1,62 +1,88 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const timer = document.getElementById("counter");
+    const counter = document.getElementById("counter");
     const minusButton = document.getElementById("minus");
     const plusButton = document.getElementById("plus");
     const heartButton = document.getElementById("heart");
     const pauseButton = document.getElementById("pause");
-    const likes = document.getElementsByClassName("likes");
+    const submit = document.getElementById("submit")
+    const buttons = [minusButton, plusButton, heartButton, submit]
+    let time = 0;
+    let isPaused = false;
 
-    let likesArray = new Array();
-
-    let pageTimer = setInterval(upTick, 1000);
-
-
-    plusButton.addEventListener("click", function() {
-        const counter = timer.innerText;
-        let temp = parseInt(counter);
-
-        timer.innerText = ++temp;
-    })
+    let ticking = setInterval(startTimer, 1000);
 
     minusButton.addEventListener("click", function() {
-        const counter = timer.innerText;
-        let temp = parseInt(counter);
-
-        timer.innerText = --temp;
+        counter.innerText = `${time--}`;
     })
 
-    heartButton.addEventListener("click", function() {
-        const number = timer.innerText;
-        const temp = parseInt(number);
+    plusButton.addEventListener("click", function() {
+        counter.innerText = `${time++}`;
+    })
 
-        if (likesArray[temp - 1] === undefined) {
-            likesArray[temp - 1] = 0;
+    heartButton.addEventListener("click", addLikes)
+
+    pauseButton.addEventListener("click", pauseFunction)
+
+    function startTimer() {
+        if (isPaused === false) {
+            time++;
+            counter.innerText = `${time}`;
         }
-        likesArray[temp - 1] += 1;
+    }
 
-        likes.innerText = likesArray[temp - 1];
-    })
+    function addLikes() {
+        let likes = document.querySelector(".likes");
+        let currentTime = counter.innerText;
+        let li = document.getElementById(currentTime);
 
-    pauseButton.addEventListener("click", function() {
-        let pause = clearInterval(pageTimer);
+        if (li) {
+            let text = li.innerText;
+            let textArray = text.split(" ");
+            let number = Number(textArray.slice(-2, -1));
 
-        if (pause == 1) {
-            minusButton.disabled = false;
-            plusButton.disabled = false;
-            heartButton.disabled = false;
-            pauseButton.innerText = "pause"
+            li.innerHTML = `${currentTime} has been liked ${number + 1} times`;
         } else {
-            minusButton.disabled = true;
-            plusButton.disabled = true;
-            heartButton.disabled = true;
-            pauseButton.innerText = "Resume"
+            let li = document.createElement("li");
+
+            li.setAttribute("id", currentTime);
+            likes.appendChild(li);
+            li.innerHTML = `${currentTime} has been liked 1 time`;
         }
-    })
+    }
 
-    function upTick() {
-        const counter = timer.innerText;
-        let temp = parseInt(counter);
+    function pauseFunction() {
+        if (pauseButton.innerText === "pause") {
+            pause.innerText = "resume";
 
-        timer.innerText = ++temp;
+            buttons.forEach(function(e) {
+                e.disabled = true;
+            })
+
+            isPaused = !isPaused;
+        } else {
+            pause.innerText = "pause";
+
+            buttons.forEach(function(e) {
+                e.disabled = false;
+            })
+
+            isPaused = !isPaused;
+        }
     }
 });
+
+submit.addEventListener("click", commentList)
+
+function commentList(e) {
+    e.preventDefault();
+
+    let list = document.getElementById("list");
+    let p = document.createElement('p');
+
+    list.appendChild(p);
+
+    let content = document.getElementById("comment-input");
+
+    p.innerText = `${content.value}`;
+    content.value = "";
+}
