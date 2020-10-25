@@ -21,21 +21,30 @@ function setTime() {
   };
 
   let heart = document.getElementById('heart');
-  clicks = 0
+  let clicks = 0
 
   heart.onclick = function() {
       let currentCount = count
-      currentCount.numOfClicks = clicks
-      likes = document.querySelector('.likes'); 
-
-      if (currentCount.numOfClicks > 1) {
-        let currentCount = count
-        li.appendChild()
-        li.innerText = `${currentCount} has been liked ${currentCount.numOfClicks++} times`;
+      let likes = document.querySelector('.likes'); 
+      let currentLike = likes.querySelector(`#li-${currentCount}`)
+      if (currentLike !== null) {
+        clicks++
+        li.innerText = `${currentCount} has been liked ${clicks} times`;
       } else {
+        clicks = 1
         li = document.createElement('li');
-        li.innerText = `${currentCount} has been liked 1 time`;
+        li.id = `li-${currentCount}`
+        li.innerText = `${currentCount} has been liked ${clicks} time`;
       }
       likes.appendChild(li)
   };
+
+  let pause = document.getElementById('pause');
+
+  pause.onclick = function() {
+    clearInterval(setTime)
+    document.querySelector(':button').prop('disabled', true);
+    $(':button').prop('disabled', true);
+    pause.innerHTML = "resume"
+  }
   
