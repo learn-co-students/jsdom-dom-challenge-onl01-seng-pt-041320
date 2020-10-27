@@ -46,18 +46,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let pause = document.getElementById('pause');
   let buttons = document.getElementsByTagName('button');
 
-
-  pause.onclick = function () {
-    if (pause.innerHTML != 'resume') {
-      window.clearInterval(timer);
-      for (let el of buttons) {
-        if (el.id != 'pause') {
-          el.disabled = true;
-        };
-        pause.innerHTML = 'resume';
-      };
-    };
-    };
  
 
   pause.onclick = function () {
@@ -69,20 +57,26 @@ document.addEventListener("DOMContentLoaded", function () {
         };
         pause.innerHTML = 'resume';
       };
-    };
-
-    
-  };
-    
-  let resume = document.getElementById('pause')
-  pause.onclick = function () {
-    if (pause.innerHTML === 'resume') {
+    } else {
+      count = -1
       timer = setInterval(setTime, 1000);
       for (let el of buttons) {
           el.disabled = false;
         };
-        pause.innerHTML = 'resume';
+        pause.innerHTML = 'pause';
     };
+    };
+
+    let submit = document.getElementById('submit')
+
+    submit.onclick = function () {
+      event.preventDefault();
+      let p = document.createElement("P");
+      let list = document.getElementById('list');
+      let comment = document.getElementById('comment-input').value;
+      let t = document.createTextNode(comment)
+      p.appendChild(t);
+      list.appendChild(p);
     };
   
   });
