@@ -2,6 +2,8 @@
   document.addEventListener("DOMContentLoaded", () => {
 
     const form = document.getElementById("comment-form")
+    attachPlusEventListener()
+    startTimer()
 
     form.addEventListener('submit', function(event) {
         let data = document.getElementById("comment-input").value
@@ -16,55 +18,73 @@
     
     });
 
+    const globals = {
+      clicks: 0
+    }
+
 
     
     
     function startTimer() {
-        setInterval(countUp, 1000);
+       const interval = setInterval(countUp, 1000);
+       attachPauseEventListener(interval)
       }
     
     function countUp() {
         let text = document.getElementById("counter");
         let number = parseInt(text.innerText);
         text.innerText = number + 1
-    
+
       }
     
-    interval = startTimer();
 
 
-    const minus=document.getElementById("minus")
-    const plus=document.getElementById("plus")
-    const heart=document.getElementById("heart")
-    const pause=document.getElementById("pause")
 
-    plus.addEventListener("click", function() {
-        let text = document.getElementById("counter");
-        let number = parseInt(text.innerText);
-        text.innerText = number + 1
-    })
+    const minus = document.getElementById("minus")
+    const heart = document.getElementById("heart")
+    
+    function attachPlusEventListener(){
+      const plus = document.getElementById("plus")
+      plus.addEventListener("click", function() {
+          let text = document.getElementById("counter");
+          let number = parseInt(text.innerText);
+          text.innerText = number + 1
+      })
+    }
 
     minus.addEventListener("click", function() {
         let text = document.getElementById("counter");
         let number = parseInt(text.innerText);
         text.innerText = number - 1
     })
-
+  
+    
     heart.addEventListener("click", function() {
         let a = document.getElementById("counter")
         let b = parseInt(a.innerText)
-        let list = document.querySelector("ul")
-        let li = document.createElement("li")
-        let like = document.createTextNode(`You liked the number ${b}`)
+        let likes = document.querySelector("ul")
+        let currentNumber = document.querySelector(`#li-${b}`)
 
-        list.appendChild(li)
-        li.appendChild(like)
+        if (currentNumber) {
+            globals.clicks++
+            currentNumber.innerText = `${b} has been liked ${globals.clicks} times`;
+          } 
+        else {
+            globals.clicks++
+            let li = document.createElement("li")
+            li.id = `li-${b}`
+            let like = document.createTextNode(`${b} has been liked 1 time`)
+            likes.appendChild(li)
+            li.appendChild(like)
+          }
+      });
 
-    })
-    
-    pause.addEventListener("click", function() {
-        clearInterval(interval);
-    });
+    function attachPauseEventListener(interval){
+      const pause = document.getElementById("pause")
+      pause.addEventListener("click", function() {
+          clearInterval(interval);
+      });
+    }
     
 
 
